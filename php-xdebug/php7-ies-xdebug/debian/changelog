@@ -1,0 +1,5 @@
+php7-ies-xdebug (2.4.0.beta1-0ies1~trustyppa) trusty; urgency=medium
+
+  * fix for broken i386 build: https://github.com/xdebug/xdebug/pull/221/files
+
+ -- Florian Holzhauer (For packaging only, do not use for mail) <fh-launchpadpackages@fholzhauer.de>  Thu, 12 Nov 2015 12:13:14 +0200

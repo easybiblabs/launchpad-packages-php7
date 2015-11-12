@@ -1,0 +1,86 @@
+#!/usr/bin/make -f
+
+# Uncomment this to turn on verbose mode.
+export DH_VERBOSE=1
+
+PACKAGE_NAME=php7-ies-memcached
+PECL_PKG_NAME=memcached
+PECL_PKG_REALNAME=memcached
+PHP_PREFIX=/opt/easybib
+PHPCONFIG=$(PHP_PREFIX)/bin/php-config
+PHPIZE=$(PHP_PREFIX)/bin/phpize
+EXTDIR=$(shell $(PHPCONFIG) --extension-dir)
+INIDIR=$(PHP_PREFIX)/etc/php
+SOURCE_DIR=$(shell echo $(PECL_PKG_REALNAME)-*)
+phpapiver=$(shell $(PHPCONFIG) --phpapi)
+
+CONFIG_OPTS=--with-php-config=$(PHP_PREFIX)/bin/php-config --disable-memcached-sasl
+
+DEB_HOST_GNU_TYPE    ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
+DEB_BUILD_GNU_TYPE   ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
+DEB_HOST_ARCH   ?= $(shell dpkg-architecture -qDEB_HOST_ARCH)
+
+
+COMMON_CONFIG=--build=$(DEB_BUILD_GNU_TYPE) \
+		--host=$(DEB_HOST_GNU_TYPE)
+
+ifeq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
+  CFLAGS += -O2
+else
+  CFLAGS += -O0
+endif
+CFLAGS += -Wall -fsigned-char -fno-strict-aliasing
+# LFS support
+ifneq (yes,$(PHP5_COMPAT))
+  CFLAGS += $(shell getconf LFS_CFLAGS)
+endif
+
+# Enable IEEE-conformant floating point math on alphas (not the default)
+ifeq (alpha-linux-gnu,$(DEB_HOST_GNU_TYPE))
+  CFLAGS += -mieee
+endif
+
+ifeq ($(DEB_HOST_GNU_TYPE), $(findstring $(DEB_HOST_GNU_TYPE), ia64-linux-gnu powerpc64-linux-gnu avr32-linux-gnu))
+  CFLAGS += -g
+else
+  CFLAGS += -gstabs
+endif
+
+MAKEFLAGS += -j2
+
+prefix=$(PHP_PREFIX)
+
+override_dh_auto_configure:
+	cd $(SOURCE_DIR); \
+	($(PHPIZE) --with-php-config=$(PHPCONFIG); \
+	CFLAGS="$(CFLAGS)" ./configure $(COMMON_CONFIG) $(CONFIG_OPTS) )
+
+override_dh_auto_install:
+	cd $(SOURCE_DIR); \
+	(CFLAGS="$(CFLAGS)" $(MAKE); \
+	mkdir -p $(CURDIR)/debian/tmp/modules; \
+	cp modules/* $(CURDIR)/debian/tmp/modules)
+	touch TODO
+	touch CHANGELOG
+	touch build_stamp
+	mkdir -p $(CURDIR)/debian/$(PACKAGE_NAME)/$(EXTDIR)
+	install -m 644 -o root -g root $(CURDIR)/debian/tmp/modules/$(PECL_PKG_NAME).so debian/$(PACKAGE_NAME)/$(EXTDIR)/$(PECL_PKG_NAME).so
+	mkdir -p debian/$(PACKAGE_NAME)/$(INIDIR); \
+	echo "extension=$(PECL_PKG_NAME).so" > debian/$(PACKAGE_NAME)/$(INIDIR)/$(PECL_PKG_NAME).ini
+
+clean:
+	dh_clean
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp configure-stamp
+	rm -rf tmp
+	rm -rf debian/$(PACKAGE_NAME)
+
+
+override_dh_auto_test:
+	#noop
+override_dh_usrlocal:
+	#noop
+
+%:
+	dh $@

@@ -1,0 +1,14 @@
+Source: php7-ies-xdebug
+Maintainer: Till Klampaeckel <till@php.net>
+Build-Depends: libevent-dev, bison, re2c, libtool, help2man, autoconf, automake, debhelper, php7-ies, libicu-dev
+Section: php
+Priority: optional
+Homepage: http://xdebug.org/download.php
+Standards-Version: 3.0.0
+
+Package: php7-ies-xdebug
+Architecture: any
+Conflicts: php7-xdebug
+Provides: php7-xdebug
+Depends: ${misc:Depends}, sed (>= 4.1.1-1), php7-ies, libicu42 | libicu48 | libicu52
+Description: ext/xdebug

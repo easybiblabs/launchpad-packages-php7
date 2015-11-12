@@ -1,0 +1,15 @@
+Source: php7-ies-memcached
+Maintainer: Florian Holzhauer <fh-ubuntu@fholzhauer.de>
+Build-Depends: libevent-dev, bison, re2c, libtool, help2man, autoconf, automake, debhelper, php7-ies, libmemcached-dev
+Section: php
+Priority: optional
+Homepage: https://github.com/php-memcached-dev/php-memcached
+Standards-Version: 3.8.3
+
+Package: php7-ies-memcached
+Architecture: any
+Conflicts: php7-memcached, php-memcached
+Provides: php7-memcached, php-memcached
+Depends: ${misc:Depends}, sed (>= 4.1.1-1), php7-ies, libmemcached10
+Description: memcached library for PHP 7
+

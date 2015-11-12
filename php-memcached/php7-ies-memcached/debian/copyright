@@ -1,0 +1,13 @@
+This work was packaged for Debian by:
+
+    fh <fh-ubuntu@fholzhauer.de> on Thu, 2 Nov 2016 09:00:01 +0200
+
+It was downloaded from <https://github.com/php-memcached-dev/php-memcached/tree/php7>
+
+License:
+
+    PHP 4 and PHP 5 are distributed under the PHP License v3.01, copyright (c) the PHP Group.
+
+The Debian packaging is:
+
+    Copyright (C) 2013 fh <fh-ubuntu@fholzhauer.de>
