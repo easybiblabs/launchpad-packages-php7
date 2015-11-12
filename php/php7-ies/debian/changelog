@@ -1,0 +1,31 @@
+php7-ies (7.0.0rc7-0ies0~trustyppa) trusty; urgency=medium
+
+  * RC7
+  * intl support added
+
+ -- Florian Holzhauer (For packaging only, do not use for mail) <fh-launchpadpackages@fholzhauer.de>  Thu, 12 Nov 2015 12:34:56 +0200
+
+php7-ies (7.0.0rc6-0ies0~trustyppa) trusty; urgency=medium
+
+  * RC6
+
+ -- Florian Holzhauer (For packaging only, do not use for mail) <fh-launchpadpackages@fholzhauer.de>  Sat, 07 Nov 2015 12:34:56 +0200
+
+php7-ies (7.0.0beta2-0ies0~trustyppa) trusty; urgency=medium
+
+  * Beta 2
+  * with i386 patch https://bugs.php.net/bug.php?id=69896
+
+ -- Florian Holzhauer (For packaging only, do not use for mail) <fh-launchpadpackages@fholzhauer.de>  Sun, 21 Jun 2015 12:34:56 +0200
+
+php7-ies (7.0.0alpha1-0ies1~trustyppa) trusty; urgency=medium
+
+  * Bugfix: Rejected: Symbolic link for debian/changelog not allowed
+
+ -- Florian Holzhauer (For packaging only, do not use for mail) <fh-launchpadpackages@fholzhauer.de>  Sun, 21 Jun 2015 12:34:56 +0200
+
+php7-ies (7.0.0alpha1-0easybib0~trustyppa) trusty; urgency=medium
+
+  * php 7.0.0 alpha 1
+
+ -- Florian Holzhauer (For packaging only, do not use for mail) <fh-launchpadpackages@fholzhauer.de>  Sun, 21 Jun 2015 12:34:56 +0200

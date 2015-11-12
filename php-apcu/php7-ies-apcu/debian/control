@@ -1,0 +1,19 @@
+Source: php7-ies-apcu
+Maintainer: Florian Holzhauer <fh-ubuntu@fholzhauer.de> 
+Build-Depends: libevent-dev, bison, re2c, libtool, help2man, autoconf, automake, debhelper, php7-ies
+Section: php
+Priority: optional
+Homepage: http://pecl.php.net/package/APCu
+Standards-Version: 3.8.3
+
+Package: php7-ies-apcu
+Architecture: any
+Conflicts: php7-apcu, php-apcu
+Provides: php7-apcu, php-apcu
+Depends: ${misc:Depends}, sed (>= 4.1.1-1), php7-ies
+Description: APC User Cache for PHP 7
+ The Alternative PHP Cache, also known as APC, is a free, open, and robust
+ framework for caching and optimizing PHP intermediate code. APC is a fast
+ solution for caching PHP code locally, it is not distributed like MemcacheD,
+ but they can be used together for optimal caching.
+

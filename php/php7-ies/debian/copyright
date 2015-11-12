@@ -1,0 +1,14 @@
+This work was packaged for Debian by:
+
+    fh <fh-ubuntu@fholzhauer.de> on Sun, 21 Jun 2015 09:00:01 +0200
+
+It was downloaded from <http://downloads.php.net/ab/php-7.0.0alpha1.tar.bz2>
+
+License:
+
+    PHP 7 is distributed under the PHP License v3.01, copyright (c) the PHP Group.
+
+The Debian packaging is:
+
+    Copyright (C) 2015 fh <fh-ubuntu@fholzhauer.de>
+

@@ -1,0 +1,138 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+# Sample debian/rules that uses debhelper.
+# This file was originally written by Joey Hess and Craig Small.
+# As a special exception, when this file is copied by dh-make into a
+# dh-make output file, you may use that output file without restriction.
+# This special exception was added by Craig Small in version 0.37 of dh-make.
+
+
+# TODO for new module:
+# add to modulelist
+# expand config string to enable shared
+
+
+# Uncomment this to turn on verbose mode.
+export DH_VERBOSE=1
+
+PHP_USER=www-data
+PHP_GROUP=www-data
+PHP_PREFIX=/opt/easybib
+PHP_SCANDIR=$(PHP_PREFIX)/etc/php
+
+PHP_OPTS=--with-config-file-path=$(PHP_PREFIX)/etc\
+  --with-config-file-scan-dir=$(PHP_SCANDIR)\
+  --prefix=$(PHP_PREFIX)\
+  --with-pear=$(PHP_PREFIX)/pear
+
+PHP_EXTS=--enable-sockets\
+  --enable-soap\
+  --with-openssl\
+  --enable-posix\
+  --enable-bcmath\
+  --without-sqlite3\
+  --with-mysqli=mysqlnd\
+  --enable-pcntl\
+  --with-curl\
+  --with-tidy \
+  --enable-zip \
+  --enable-pdo \
+  --enable-intl \
+  --with-pdo-mysql \
+  --without-pdo-sqlite \
+  --enable-mbstring=shared \
+  --enable-phar=shared \
+  --enable-posix=shared \
+  --enable-opcache \
+  --with-pspell=shared \
+  --with-sqlite3=shared \
+  --with-pdo-sqlite=shared \
+  --with-xsl=shared \
+  --with-zlib=shared \
+  --with-enchant=shared
+
+PHP_FPM=--enable-fpm\
+  --with-fpm-user=$(PHP_USER)\
+  --with-fpm-group=$(PHP_GROUP)
+
+DEB_HOST_GNU_TYPE    ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
+DEB_BUILD_GNU_TYPE   ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
+DEB_HOST_ARCH   ?= $(shell dpkg-architecture -qDEB_HOST_ARCH)
+
+
+COMMON_CONFIG=--build=$(DEB_BUILD_GNU_TYPE) \
+		--host=$(DEB_HOST_GNU_TYPE)
+
+ifeq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
+  CFLAGS += -O2
+else
+  CFLAGS += -O0
+endif
+CFLAGS += -Wall -fsigned-char -fno-strict-aliasing
+# LFS support
+ifneq (yes,$(PHP5_COMPAT))
+  CFLAGS += $(shell getconf LFS_CFLAGS)
+endif
+
+# Enable IEEE-conformant floating point math on alphas (not the default)
+ifeq (alpha-linux-gnu,$(DEB_HOST_GNU_TYPE))
+  CFLAGS += -mieee
+endif
+
+ifeq ($(DEB_HOST_GNU_TYPE), $(findstring $(DEB_HOST_GNU_TYPE), ia64-linux-gnu powerpc64-linux-gnu avr32-linux-gnu))
+  CFLAGS += -g
+else
+  CFLAGS += -gstabs
+endif
+
+MAKEFLAGS += -j4
+
+prefix=$(PHP_PREFIX)
+
+override_dh_auto_configure:
+	CFLAGS="$(CFLAGS)" ./configure $(COMMON_CONFIG) $(PHP_OPTS) $(PHP_EXTS) $(PHP_FPM)
+
+#
+# format for modulelist file:
+# package extname dsoname extprefix priority
+# package: name of the ubuntupackage
+# extname (optional): name of the extension, used for ini-file generation only. default: package
+# dsoname (optional): actual name of the .so file to be copied. default: package
+# extprefix (optional): prefix for extension=, usually "zend" if set. default: none
+# priority (optional): if set: prepended to the ini-file-name. default: none
+#
+
+override_dh_auto_install:
+	CFLAGS="$(CFLAGS)" $(MAKE) install INSTALL_ROOT=$(CURDIR)/debian/php7-ies; \
+	cd $(CURDIR)/debian/php7-ies; \
+	rm -rf .channels .depdb .depdblock .filemap .lock .registry; \
+	ext=`$(CURDIR)/debian/php7-ies/$(PHP_PREFIX)/bin/php-config --extension-dir`; \
+	cat $(CURDIR)/debian/modulelist | while read package extname dsoname extprefix priority; do \
+		echo "Building package $$package:" ;\
+		modulepath=$(CURDIR)/debian/php7-ies/$$ext; \
+		if [ -z "$$dsoname" ]; then dsoname=$$package; fi; \
+		if [ -n "$$priority" ]; then prepend="$$priority-"; else prepend=""; fi; \
+		echo "dsoname is $$dsoname.so, expref is $$extprefix, going to copy $$modulepath/$$dsoname.so to $(CURDIR)/debian/php7-ies-$$package$$ext/$$dsoname.so" ;\
+		mkdir -p $(CURDIR)/debian/php7-ies-$$package$$ext; \
+		install -m 644 -o root -g root \
+			$$modulepath/$$dsoname.so \
+			$(CURDIR)/debian/php7-ies-$$package$$ext/$$dsoname.so; \
+		rm $(CURDIR)/debian/php7-ies$$ext/$$dsoname.*; \
+		mkdir -p $(CURDIR)/debian/php7-ies-$$package/$(PHP_SCANDIR); \
+		sed -e"s/@extname@/$$extname/g; s/@extprefix@/$$extprefix/g; s/@dsoname@/$$dsoname/g" \
+		  < $(CURDIR)/debian/php7-module.ini \
+		  > $(CURDIR)/debian/php7-ies-$$package/$(PHP_SCANDIR)/$$prepend$$dsoname.ini; \
+		echo "Content prepared for package $$package:" ;\
+		find $(CURDIR)/debian/php7-ies-$$package/ ;\
+		echo "- - - - - - - -"; \
+	done
+	
+	
+
+override_dh_auto_test:
+	#noop
+override_dh_usrlocal:
+	#noop
+
+%:
+	dh $@

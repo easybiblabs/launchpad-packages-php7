@@ -1,0 +1,5 @@
+php7-ies-apcu (4.0.7.seven-0ies0~trustyppa) trusty; urgency=medium
+
+  * testbuild of https://github.com/krakjoe/apcu/tree/seven (ffb4fc8e811e62efa0e05b36faf857b427c572b0)
+
+ -- Florian Holzhauer (For packaging only, do not use for mail) <fh-launchpadpackages@fholzhauer.de>  Sun, 07 Nov 2015 10:11:12 +0200

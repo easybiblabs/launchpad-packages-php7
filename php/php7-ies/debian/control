@@ -1,0 +1,98 @@
+Source: php7-ies
+Maintainer: Florian Holzhauer <fh-easybib@fholzhauer.de>
+Build-Depends: libevent-dev, openssl, libssl-dev, libcurl4-openssl-dev, libpspell-dev, libtidy-dev, libxml2-dev, libmysqlclient-dev, bison, re2c, libtool, help2man, autoconf, automake, debhelper, quilt, libenchant1c2a, libenchant-dev, libglib2.0-dev, libxslt1-dev, libicu-dev
+Homepage: http://www.php.net/
+Section: php
+Priority: optional
+Standards-Version: 3.8.3
+
+Package: php7-ies
+Architecture: any
+Conflicts: php7, php7-common, php7-dev, php7-cli, php7-curl, php7-cgi, php7-mysql, php7-tidy, php-pear, php5-easybib
+Provides: php7, php7-common, php7-dev, php7-cli, php7-curl, php7-cgi, php7-mysql, php7-tidy, php-pear
+Depends: ${misc:Depends}, sed (>= 4.1.1-1), openssl, libtidy-0.99-0, libcurl4-openssl-dev, libmysqlclient-dev, libxml2-dev, php7-ies-opcache
+Description: server-side, HTML-embedded scripting language (FPM-CGI binary)
+ This package provides the Fast Process Manager interpreter that runs
+ as a daemon and receives Fast/CGI requests.
+ This package is php-fpm in 'tills special flavour'.
+ PHP5 is an HTML-embedded scripting language. Much of its syntax is borrowed
+ from C, Java and Perl with a couple of unique PHP-specific features thrown
+ in. The goal of the language is to allow web developers to write dynamically
+ generated pages quickly.
+
+Package: php7-ies-mbstring
+Architecture: any
+Conflicts: php7-mbstring
+Provides: php7-mbstring
+Depends: ${misc:Depends}, php7-ies (= ${binary:Version})
+Description: mbstring
+
+Package: php7-ies-enchant
+Architecture: any
+Conflicts: php7-enchant
+Provides: php7-enchant
+Depends: ${misc:Depends}, php7-ies (= ${binary:Version})
+Description: enchant
+
+Package: php7-ies-intl
+Architecture: any
+Conflicts: php7-intl
+Provides: php7-intl
+Depends: ${misc:Depends}, php7-ies (= ${binary:Version}), libicu42 | libicu48 | libicu52
+Description: enchant
+
+Package: php7-ies-opcache
+Architecture: any
+Conflicts: php7-opcache
+Provides: php7-opcache
+Depends: ${misc:Depends}, php7-ies (= ${binary:Version})
+Description: php7 opcache
+
+Package: php7-ies-phar
+Architecture: any
+Conflicts: php7-phar
+Provides: php7-phar
+Depends: ${misc:Depends}, php7-ies (= ${binary:Version})
+Description: phar
+
+Package: php7-ies-posix
+Architecture: any
+Conflicts: php7-posix
+Provides: php7-posix
+Depends: ${misc:Depends}, php7-ies (= ${binary:Version})
+Description: posix
+
+Package: php7-ies-pspell
+Architecture: any
+Conflicts: php7-pspell
+Provides: php7-pspell
+Depends: ${misc:Depends}, php7-ies (= ${binary:Version})
+Description: pspell
+
+Package: php7-ies-pdo-sqlite
+Architecture: any
+Conflicts: php7-pdo-sqlite
+Provides: php7-pdo-sqlite
+Depends: ${misc:Depends}, php7-ies (= ${binary:Version})
+Description: pdo-sqlite
+
+Package: php7-ies-sqlite3
+Architecture: any
+Conflicts: php7-sqlite3
+Provides: php7-sqlite3
+Depends: ${misc:Depends}, php7-ies (= ${binary:Version})
+Description: sqlite3
+
+Package: php7-ies-xsl
+Architecture: any
+Conflicts: php7-xsl
+Provides: php7-xsl
+Depends: ${misc:Depends}, php7-ies (= ${binary:Version}), libxml2, libxslt1.1
+Description: xsl
+
+Package: php7-ies-zlib
+Architecture: any
+Conflicts: php7-zlib
+Provides: php7-zlib
+Depends: ${misc:Depends}, php7-ies (= ${binary:Version})
+Description: zlib

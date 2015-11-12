@@ -1,0 +1,11 @@
+*.build
+*.changes
+*.deb
+*.debian.tar.gz
+*.diff.gz
+*.dsc
+*.upload
+.DS_Store
+vagrant/.gnupg
+vagrant/.vagrant*
+vagrant/gnupg
